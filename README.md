@@ -3,6 +3,13 @@
 
   A test project for USB2USB keyboard mapper on pi-pico.
 
+
+## Code and CMake
+
+ - test code refer to github:pico-example/blink/blink.c
+ - CMake file refer to github:pico-example/CMakeLists.txt
+
+
 ## Download UF2
 
 ```sh
