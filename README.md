@@ -4,27 +4,16 @@
   A test project for USB2USB keyboard mapper on pi-pico.
 
 
-## Code and CMake
+## Simple Examples
 
- - test code refer to github:pico-example/blink/blink.c
- - CMake file refer to github:pico-example/CMakeLists.txt
-
+ - simplest for env setup: [blink](simple/README.md#blink)
+ - standard output over usb-serial device: helloworld_usb.
 
 ## Download UF2
 
-```sh
-sudo mkdir -p /mnt/pico
-
-# mount pico u-disk. (press reset when power on)
-sudo mount /dev/sda1 /mnt/pico
-
-# check if it is pico u-disk or not
-ls /mnt/pico/
-
-# copy to flash
-sudo cp blink.uf2 /mnt/pico
-sudo sync
-```
+ You need to boot pico into boot mode.
+ - copy into pico, see [tools/copy-flash.sh](tools/copy-flash.sh)
+ - or use picotool: `picotool load xxx.elf/xxx.uf2`
 
 ## Reference
 

@@ -26,3 +26,13 @@ fi
 echo "umount $mnt"
 umount $mnt
 
+exit 0
+
+# simple commands
+# mount pico u-disk. (press reset when power on)
+sudo mount /dev/sda1 /mnt/pico
+# check if it is pico u-disk or not
+ls /mnt/pico/
+# copy to flash
+sudo cp blink.uf2 /mnt/pico
+sudo sync
