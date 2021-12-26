@@ -3,6 +3,14 @@
 
 Each one could be compiled alone.
 
+Build example:
+```sh
+cd blink
+mkdir build && cd build
+cmake ..
+make
+```
+
 ## Blink
 
  - test code refer to github:pico-example/blink/blink.c
