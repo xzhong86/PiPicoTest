@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <hardware/gpio.h>
 
 #include "bsp/board.h"
 #include "tusb.h"
@@ -49,6 +50,20 @@ enum  {
 
 static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
+#define BTN_FIRST 2
+#define BTN_NUM   2
+static void button_init() {
+    for (int i = 0; i < BTN_NUM; i++) {
+	gpio_init(BTN_FIRST + i);
+	gpio_set_dir(BTN_FIRST + i, GPIO_IN);
+	gpio_pull_up(BTN_FIRST + i);
+    }
+}
+static bool button_read(uint n) {
+    if (n >= BTN_NUM) return false;
+    return !gpio_get(BTN_FIRST + n);
+}
+
 void led_blinking_task(void);
 void hid_task(void);
 
@@ -57,6 +72,7 @@ int main(void)
 {
   board_init();
   tusb_init();
+  button_init();
 
   while (1)
   {
@@ -201,6 +217,7 @@ void hid_task(void)
   // Poll every 10ms
   const uint32_t interval_ms = 10;
   static uint32_t start_ms = 0;
+  static int key_pressed = 0;
 
   if ( board_millis() - start_ms < interval_ms) return; // not enough time
   start_ms += interval_ms;
@@ -216,7 +233,13 @@ void hid_task(void)
   }else
   {
     // Send the 1st of report chain, the rest will be sent by tud_hid_report_complete_cb()
-    send_hid_report(REPORT_ID_KEYBOARD, btn);
+      if (button_read(0))
+	  send_hid_report(REPORT_ID_KEYBOARD, 1);
+      else if (button_read(1))
+	  send_hid_report(REPORT_ID_MOUSE, 1);
+      else if (key_pressed)
+	  send_hid_report(REPORT_ID_KEYBOARD, 0);
+      key_pressed = button_read(0);
   }
 }
 
